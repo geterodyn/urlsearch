@@ -25,7 +25,7 @@ SECRET_KEY = '0^y@g9%)=qq###*0g=!tni!7#2o$2*pf!9(q-*mf7^vun9(c-('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['3.124.131.213']
 
 
 # Application definition
@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'searchapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'url_search',
+        'USER': 'db_admin',
+        'PASSWORD': 'qwerty@123',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
