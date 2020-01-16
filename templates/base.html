@@ -1,6 +1,9 @@
+{% load static %}
 <html>
     <head>
         <title>Счетчик слов</title>
+
+	<link rel='stylesheet' href="{% static 'css/styles.css' %}">
 
         <link rel="stylesheet" 
 		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
@@ -42,10 +45,11 @@
         <form action="." method="POST">
             {{form.as_p}}
             {% csrf_token %}
-            <p><button class="add" type="submit">Посчитать</button></p>
+            <button class="add" type="submit"><i class="fas fa-search">&nbsp;</i></button>
         </form>
         <hr/>
-        <table style="width:100%">
+        <table id="t01" style="width:100%">
+		<caption>Searching results</caption>
             <tr>
                 <th>ID</th>
                 <th>Created</th>
@@ -59,12 +63,16 @@
             {% for job in jobs %}
                 <tr>
                     <th>{{job.uuid}}</th>
-                    <th>{{job.created}}</th>
+                    <th>{{job.created|date:"d.m.y H:i"}}</th>
                     <th>{{job.url}}</th>
                     <th>{{job.search_word}}</th>
-                    <th>{{job.status}}</th>
-                    <th>{{job.result}}</th>
-                    <th>{{job.updated}}</th>
+		    {% if  job.status == 'queued' %}
+                    <th>В очереди</th>
+		    {% elif job.status == 'finished' %}
+                    <th>Завершено</th>
+                    {% endif %}
+		    <th>{{job.result}}</th>
+                    <th>{{job.updated|date:"d.m.y H:i"}}</th>
                 </tr>
                 {% empty %}
                 <li>Тут появится результат поиска</li>
