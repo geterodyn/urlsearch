@@ -29,24 +29,31 @@
 
     <body>
         {% if messages %}
-					<div class="row">
-						<ul class="messages">
 							{% for message in messages %}
-							<li class="alert alert-{{ message.tags }} alert-dismissable">
+							<p class="alert alert-{{ message.tags }} alert-dismissable">
 							{{ message }}
 							<a href="#" class="close" data-dismiss='alert'>&nbsp;x</a>
-							</li>
+							</p>
 							{% endfor %}
-						</ul>
-					</div>
-                {% endif %}
+        {% endif %}
                 
         <h1>Подсчёт слов, содержащихся на странице в Интернете</h1>
-        <form action="." method="POST">
-            {{form.as_p}}
-            {% csrf_token %}
-            <button class="add" type="submit"><i class="fas fa-search">&nbsp;</i></button>
-        </form>
+	<div class="container">
+		<div class="row">
+			<div class="col-8">
+       				 <form action="." method="POST">
+           			{{form.as_p}}
+            			{% csrf_token %}
+            			<button class="add" type="submit"><i class="fas fa-search">&nbsp;</i></button>
+        			</form>
+			</div>
+			<div class="col">
+				<form action="{% url 'drop' %}" method="GET">
+					<button class="drop" type='submit'><span>Drop Table</span></button>
+				</form>
+			</div>
+		</div>
+	</div>
         <hr/>
         <table id="t01" style="width:100%">
 		<caption>Searching results</caption>
@@ -70,6 +77,8 @@
                     <th>В очереди</th>
 		    {% elif job.status == 'finished' %}
                     <th>Завершено</th>
+		    {% else %}
+		    <th>{{job.status}}</th>
                     {% endif %}
 		    <th>{{job.result}}</th>
                     <th>{{job.updated|date:"d.m.y H:i"}}</th>

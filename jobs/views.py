@@ -17,7 +17,7 @@ class JobItemView(View):
             cd = form.cleaned_data
             url = cd['url']
             word = cd['search_word']
-            q = Queue(connection=Redis())
+            q = Queue(is_aasync=True,connection=Redis())
             job = q.enqueue(word_count,args=(url, word),result_ttl=5000)
             JobItem.objects.create(
                     uuid=job.id,
@@ -25,17 +25,20 @@ class JobItemView(View):
                     url=url,
                     search_word=word
                     )
-
-
-
-#           new_job = form.save(commit=False)
-#           new_job.result = word_count(new_job.url, new_job.search_word)
-            messages.success(request, 'Обождите')
-#           new_job.save()
+            messages.success(request, 'Задача поставлена в очередь. Проверьте результат задачи позже')
             return redirect(reverse('home'))
         return render(request, 'base.html', {'form': form})
 
     def get(self, request, *args, **kwargs):
-        form = JobForm
-        jobs = JobItem.objects.all()
-        return render(request, 'base.html', {'form': form, 'jobs': jobs})
+        return render(
+                request,
+                'base.html',
+                {
+                    'form': JobForm,
+                    'jobs': JobItem.objects.all()
+                    }
+                )
+
+def drop_table(request):
+    JobItem.objects.all().delete()
+    return redirect(reverse('home'))

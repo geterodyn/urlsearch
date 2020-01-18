@@ -127,3 +127,6 @@ STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'static')
         ]
 STATIC_ROOT = '/var/www/searchurl/static/'
+
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = '6379'

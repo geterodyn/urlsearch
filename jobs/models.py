@@ -1,4 +1,5 @@
 from django.db import models
+from rq.job import Job
 
 # Create your models here.
 class JobItem(models.Model):
@@ -8,7 +9,10 @@ class JobItem(models.Model):
     updated = models.DateTimeField(auto_now=True)
     url = models.URLField()
     search_word = models.CharField(max_length=100)
-    result = models.CharField(max_length=10, default='-')
+    result = models.CharField(max_length=11, default='-')
 
     class Meta:
         ordering = ('created',)
+
+    def get_job(self, redis_connection=None):
+        return Job.fetch(str(self.uuid), connection=redis_connection)

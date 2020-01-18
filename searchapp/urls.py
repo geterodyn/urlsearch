@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from jobs.views import JobItemView
+from jobs.views import JobItemView, drop_table
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', JobItemView.as_view(), name='home' ),
+    path('drop/', drop_table, name='drop'),
 ]
