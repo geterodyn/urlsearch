@@ -17,7 +17,7 @@ class JobItemView(View):
             cd = form.cleaned_data
             url = cd['url']
             word = cd['search_word']
-            q = Queue(is_aasync=True,connection=Redis())
+            q = Queue(connection=Redis())
             job = q.enqueue(word_count,args=(url, word),result_ttl=5000)
             JobItem.objects.create(
                     uuid=job.id,
